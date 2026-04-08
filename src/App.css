@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui";
+
+*{
+  font-family: "Roboto Slab", serif;
+  font-style: normal;
+}
+
+.container{
+  @apply px-4 lg:px-0 w-full max-w-100 sm:max-w-150 md:max-w-187.5 lg:max-w-250 xl:max-w-300 2xl:max-w-325 mx-auto;
+}
+body{
+  @apply bg-white
+}
