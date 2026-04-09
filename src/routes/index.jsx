@@ -8,6 +8,7 @@ import UserLogin from "../pages/Register/userLogin";
 import Orders from "../pages/Orders/Index";
 import PrivateRoutes from "./privateRoutes";
 import Dashboard from "../pages/dashboard";
+import AuthRoutes from "./authRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -22,15 +23,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/login",
-        Component: Login,
+        element: (
+          <AuthRoutes>
+            <Login></Login>
+          </AuthRoutes>
+        ),
       },
       {
         path: "/register",
-        Component: Register,
+        element: (
+          <AuthRoutes>
+            <Register></Register>
+          </AuthRoutes>
+        ),
       },
       {
         path: "/user/login",
-        Component: UserLogin,
+        element: (
+          <AuthRoutes>
+            <UserLogin></UserLogin>
+          </AuthRoutes>
+        ),
       },
       {
         path: "/dashboard",

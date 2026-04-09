@@ -2,16 +2,16 @@ import React, { useContext } from "react";
 import { AuthContext } from "../context/authContext/authContext";
 import { Navigate, useLocation } from "react-router";
 
-const PrivateRoutes = ({ children }) => {
+const AuthRoutes = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  const location = useLocation();
+
   if (loading) {
     return <span className="loading loading-spinner loading-sm"></span>;
   }
   if (user) {
-    return children;
+    return <Navigate to="/" replace />;
   }
-  return <Navigate state={location?.pathname} to="/login" replace />;
+  return children;
 };
 
-export default PrivateRoutes;
+export default AuthRoutes;
