@@ -1,7 +1,7 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import React, { useContext, useRef, useState } from "react";
 import { auth } from "../../firebase/firebase.init";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../context/authContext/authContext";
 
 const UserLogin = () => {
@@ -13,6 +13,7 @@ const UserLogin = () => {
   const { signInUser } = useContext(AuthContext);
   const ref = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +30,7 @@ const UserLogin = () => {
           return;
         }
         setSuccess("Login Successfull.");
-        navigate("/", { replace: true });
+        navigate(location.state || "/", { replace: true });
       })
       .catch((error) => {
         setError(error.message);

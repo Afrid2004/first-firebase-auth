@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import React, { useContext, useState } from "react";
 import { auth } from "../../firebase/firebase.init";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../context/authContext/authContext";
 
 const Login = () => {
@@ -16,14 +16,16 @@ const Login = () => {
   const gitHubProvider = new GithubAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useContext(AuthContext);
+  console.log(location);
 
   const handleGoogleSignIn = () => {
     setErr(null);
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result.user);
-        navigate("/", { replace: true });
+        navigate(location.state || "/", { replace: true });
       })
       .catch((error) => {
         setErr(error.message);
@@ -34,7 +36,7 @@ const Login = () => {
     setErr(null);
     signInWithPopup(auth, gitHubProvider)
       .then((result) => {
-        navigate("/", { replace: true });
+        navigate(location.state || "/", { replace: true });
       })
       .catch((error) => {
         setErr(error.message);
@@ -45,7 +47,7 @@ const Login = () => {
     setErr(null);
     signInWithPopup(auth, facebookProvider)
       .then((result) => {
-        navigate("/", { replace: true });
+        navigate(location.state || "/", { replace: true });
       })
       .catch((error) => {
         setErr(error.message);

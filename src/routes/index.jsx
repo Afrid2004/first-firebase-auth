@@ -5,6 +5,9 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register/Index";
 import UserLogin from "../pages/Register/userLogin";
+import Orders from "../pages/Orders/Index";
+import PrivateRoutes from "./privateRoutes";
+import Dashboard from "../pages/dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +31,22 @@ export const router = createBrowserRouter([
       {
         path: "/user/login",
         Component: UserLogin,
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateRoutes>
+            <Dashboard></Dashboard>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/orders",
+        element: (
+          <PrivateRoutes>
+            <Orders></Orders>
+          </PrivateRoutes>
+        ),
       },
     ],
   },

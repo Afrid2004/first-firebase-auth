@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../context/authContext/authContext";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase/firebase.init";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, signOutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSignOut = () => {
-    signOut(auth)
+    signOutUser()
       .then(() => {
         navigate("/login", { replace: true });
       })
@@ -38,6 +36,19 @@ const Navbar = () => {
               <li>
                 <NavLink to="/about">About</NavLink>
               </li>
+              <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
+              {user && (
+                <>
+                  <li>
+                    <NavLink to="/orders">Orders</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/profile">Profile</NavLink>
+                  </li>
+                </>
+              )}
               <li>
                 {user ? (
                   <button
