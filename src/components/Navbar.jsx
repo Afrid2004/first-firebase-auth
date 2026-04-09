@@ -1,7 +1,21 @@
-import React from "react";
-import { NavLink } from "react-router";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router";
+import { AuthContext } from "../context/authContext/authContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase.init";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/login", { replace: true });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   return (
     <div className="border-b bg-white border-gray-200 py-2">
       <div className="container">
@@ -25,12 +39,21 @@ const Navbar = () => {
                 <NavLink to="/about">About</NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/login"
-                  className="bg-orange-500 hover:bg-orange-600 duration-75 text-white px-4 py-2 rounded-4xl"
-                >
-                  Login
-                </NavLink>
+                {user ? (
+                  <button
+                    onClick={() => handleSignOut()}
+                    className="bg-gray-700 cursor-pointer hover:bg-gray-800 duration-75 text-white px-4 py-2 rounded-4xl"
+                  >
+                    Sign Out
+                  </button>
+                ) : (
+                  <NavLink
+                    to="/login"
+                    className="bg-orange-500 hover:bg-orange-600 duration-75 text-white px-4 py-2 rounded-4xl"
+                  >
+                    Sign In
+                  </NavLink>
+                )}
               </li>
             </ul>
           </div>

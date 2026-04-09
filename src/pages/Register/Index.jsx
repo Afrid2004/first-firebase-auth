@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import React, { useContext, useState } from "react";
 import { auth } from "../../firebase/firebase.init";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../context/authContext/authContext";
 
 const Register = () => {
@@ -17,6 +17,7 @@ const Register = () => {
   const passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
 
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -24,6 +25,7 @@ const Register = () => {
     const password = event.target.password.value;
     const name = event.target.name.value;
     const termsAndCondition = event.target.terms.checked;
+
     if (!passPattern.test(password)) {
       setSuccess(false);
       setError(
@@ -51,7 +53,11 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
         setSuccess(true);
-        updateProfile(result.user, { displayName: name });
+        updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL:
+            "https://i.ibb.co.com/9K7nCZX/default-avatar-social-media-display-600nw-2632690107.jpg",
+        });
         event.target.reset();
         sendEmailVerification(result.user)
           .then(() => {
@@ -60,6 +66,7 @@ const Register = () => {
           .catch((error) => {
             console.log(error.message);
           });
+        navigate("/user/login", { replace: true });
       })
       .catch((error) => {
         console.log(error.message);

@@ -1,10 +1,8 @@
-import {
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import React, { useRef, useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import React, { useContext, useRef, useState } from "react";
 import { auth } from "../../firebase/firebase.init";
 import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../../context/authContext/authContext";
 
 const UserLogin = () => {
   const [error, setError] = useState("");
@@ -12,7 +10,9 @@ const UserLogin = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [emailValue, setEmailValue] = useState("");
+  const { signInUser } = useContext(AuthContext);
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,14 +22,14 @@ const UserLogin = () => {
     setSuccess(false);
     setLoading(true);
 
-    signInWithEmailAndPassword(auth, email, password)
+    signInUser(email, password)
       .then((result) => {
         if (!result.user.emailVerified) {
-          setError("Please verify your email first.");
+          setError("Please verify your email first");
           return;
         }
-        console.log(result);
-        setSuccess(true);
+        setSuccess("Login Successfull.");
+        navigate("/", { replace: true });
       })
       .catch((error) => {
         setError(error.message);
@@ -38,6 +38,32 @@ const UserLogin = () => {
         setLoading(false);
       });
   };
+
+  //pause to perform user login using context API
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const email = event.target.email.value;
+  //   const password = event.target.password.value;
+  //   setError("");
+  //   setSuccess(false);
+  //   setLoading(true);
+
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then((result) => {
+  //       if (!result.user.emailVerified) {
+  //         setError("Please verify your email first.");
+  //         return;
+  //       }
+  //       console.log(result);
+  //       setSuccess(true);
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
   const handleResetPass = () => {
     if (!emailValue) {
